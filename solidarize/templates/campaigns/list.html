@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Campanhas</h4>
+  <a href="{{ url_for('campaigns.create') }}" class="btn btn-primary">Nova campanha</a>
+</div>
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Título</th>
+          <th>Meta (R$)</th>
+          <th>Período</th>
+          <th style="width: 180px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in campaigns %}
+        <tr>
+          <td>{{ c.title }}</td>
+          <td>{{ '%.2f'|format(c.goal or 0) }}</td>
+          <td>
+            {% if c.start_date %}{{ c.start_date.strftime('%d/%m/%Y') }}{% endif %}
+            {% if c.end_date %} - {{ c.end_date.strftime('%d/%m/%Y') }}{% endif %}
+          </td>
+          <td class="text-end">
+            <a href="{{ url_for('campaigns.edit', id=c.id) }}" class="btn btn-sm btn-outline-primary">Editar</a>
+            <form method="post" action="{{ url_for('campaigns.delete', id=c.id) }}" class="d-inline" onsubmit="return confirm('Remover campanha?')">
+              <button class="btn btn-sm btn-outline-danger">Excluir</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-center py-4">Nenhuma campanha cadastrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

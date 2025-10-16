@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Doações</h4>
+  <a href="{{ url_for('donations.create') }}" class="btn btn-primary">Registrar doação</a>
+</div>
+<div class="card shadow-sm mb-3">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Data</th>
+          <th>Doador</th>
+          <th>Campanha</th>
+          <th class="text-end">Valor (R$)</th>
+          <th style="width: 120px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in donations %}
+        <tr>
+          <td>{{ d.date.strftime('%d/%m/%Y') if d.date else '-' }}</td>
+          <td>{{ d.donor.name }}</td>
+          <td>{{ d.campaign.title }}</td>
+          <td class="text-end">{{ '%.2f'|format(d.amount) }}</td>
+          <td class="text-end">
+            <form method="post" action="{{ url_for('donations.delete', id=d.id) }}" onsubmit="return confirm('Remover doação?')">
+              <button class="btn btn-sm btn-outline-danger">Excluir</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center py-4">Nenhuma doação registrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

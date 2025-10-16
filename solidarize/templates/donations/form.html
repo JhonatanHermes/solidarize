@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h4 class="mb-3">Registrar doação</h4>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="post">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Doador</label>
+          <select name="donor_id" class="form-select" required>
+            <option value="">Selecione...</option>
+            {% for d in donors %}
+            <option value="{{ d.id }}">{{ d.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Campanha</label>
+          <select name="campaign_id" class="form-select" required>
+            <option value="">Selecione...</option>
+            {% for c in campaigns %}
+            <option value="{{ c.id }}">{{ c.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Valor (R$)</label>
+          <input type="number" name="amount" step="0.01" min="0" class="form-control" required>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Data</label>
+          <input type="date" name="date" class="form-control">
+        </div>
+        <div class="col-md-8 mb-3">
+          <label class="form-label">Observação</label>
+          <input type="text" name="note" class="form-control">
+        </div>
+      </div>
+      <button class="btn btn-success">Salvar</button>
+      <a class="btn btn-link" href="{{ url_for('donations.list') }}">Voltar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}
